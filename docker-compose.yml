@@ -8,6 +8,8 @@ services:
             - "8000:8000"
         volumes:
             - .:/app
+            - /app/vendor
+
         command: ./start.sh
         depends_on:
             - db
