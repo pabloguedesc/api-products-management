@@ -21,12 +21,14 @@ class ListAllProductsService
       'take' => 'sometimes|integer|min:1',
       'item' => 'required|in:name,description',
       'filterValue' => 'sometimes',
+      'page' => 'sometimes|integer'
     ])->validate();
 
     $take = $validatedData['take'] ?? 10;
     $item = $validatedData['item'];
     $filterValue = $validatedData['filterValue'] ?? '';
+    $page = $validatedData['page'] ?? '';
 
-    return $this->productRepository->getAll($take, $item, $filterValue);
+    return $this->productRepository->getAll($take, $item, $filterValue, $page);
   }
 }

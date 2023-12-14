@@ -27,14 +27,14 @@ class ProductRepository
     return $product->delete();
   }
 
-  public function getAll(int $take = 10, string $item = 'name', string $filterValue = ''): \Illuminate\Contracts\Pagination\LengthAwarePaginator
+  public function getAll(int $take = 10, string $item = 'name', string $filterValue = '', int $page = 1): \Illuminate\Contracts\Pagination\LengthAwarePaginator
   {
-    $query = Product::query();
+      $query = Product::query();
 
-    if (!empty($filterValue)) {
-      $query->where($item, 'like', '%' . $filterValue . '%');
-    }
+      if (!empty($filterValue)) {
+          $query->where($item, 'like', '%' . $filterValue . '%');
+      }
 
-    return $query->paginate($take);
+      return $query->paginate($take, ['*'], 'page', $page);
   }
 }
