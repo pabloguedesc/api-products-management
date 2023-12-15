@@ -5,6 +5,7 @@ namespace App\Services\product;
 use App\Repositories\ProductRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 
 class ListAllProductsService
 {
@@ -27,6 +28,14 @@ class ListAllProductsService
     $item = $validatedData['item'];
     $filterValue = $validatedData['filterValue'] ?? '';
 
-    return $this->productRepository->getAll($take, $item, $filterValue);
+    $products = $this->productRepository->getAll($take, $item, $filterValue);
+
+    foreach ($products as $product) {
+      if ($product->image) {
+        $product->imageUrl = Storage::url($product->image);
+      }
+    }
+
+    return $products;
   }
 }
