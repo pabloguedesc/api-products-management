@@ -31,6 +31,8 @@ class ProductRepository
   {
     $query = Product::query();
 
+    $query = Product::with('category');
+
     if (!empty($filterValue)) {
       $query->where($item, 'like', '%' . $filterValue . '%');
     }

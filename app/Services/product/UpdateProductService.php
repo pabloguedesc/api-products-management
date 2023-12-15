@@ -24,7 +24,7 @@ class UpdateProductService
       'description' => 'sometimes|string|max:200',
       'price' => 'sometimes|numeric|min:0',
       'expiry_date' => 'sometimes|date|after_or_equal:today',
-      'image' => 'sometimes|string',
+      'image' => 'sometimes',
       'category_id' => 'sometimes|uuid|exists:categories,id'
     ]);
 

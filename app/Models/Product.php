@@ -10,4 +10,9 @@ class Product extends Model
   use HasUuids;
 
   protected $fillable = ['name', 'description', 'price', 'expiry_date', 'image', 'category_id'];
+
+  public function category()
+  {
+    return $this->belongsTo(Category::class);
+  }
 }

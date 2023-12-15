@@ -6,6 +6,7 @@ use App\Exceptions\CustomException;
 use App\Repositories\ProductRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class CreateProductService
 {
@@ -23,7 +24,7 @@ class CreateProductService
       'description' => 'required|string|max:200',
       'price' => 'required|numeric|min:0',
       'expiry_date' => 'required|date|after_or_equal:today',
-      'image' => 'required|string|unique:products,image',
+      'image' => 'required',
       'category_id' => 'required|uuid|exists:categories,id'
     ]);
 
@@ -32,7 +33,14 @@ class CreateProductService
       throw new CustomException("Falha na validação: " . $errors->first(), 400);
     }
 
-    $validatedData =  $validator->validated();
+    $validatedData = $validator->validated();
+
+    if ($request->hasFile('image')) {
+      $image = $request->file('image');
+      $imageName = Str::uuid() . '.' . $image->getClientOriginalExtension();
+      $path = $image->storeAs('images', $imageName, 'public');
+      $validatedData['image'] = $path;
+    }
 
     return $this->productRepository->create($validatedData);
   }
